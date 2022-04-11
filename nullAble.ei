@@ -8,7 +8,7 @@ import thread.ei;
 pub class nullAble<Type> {
     co(type);
     pub v type : Type;
-    pub fn resolve() : Type {
+    pub fn resolve() {
         //if this.type == null {
         //    panic("nullAble.resolve() called on null");
         //}
