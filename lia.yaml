@@ -1,6 +1,5 @@
 name: ellieStd
 version: 0.1.0
-package_type: lib
 description: Ellie-Standard-Types
 author: Behemehal
 license: GPL-2.0
