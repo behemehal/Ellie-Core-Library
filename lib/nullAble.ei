@@ -3,6 +3,7 @@
 */
 
 import thread.ei;
+import void.ei;
 
 @dont_fix_variant=true;
 pub class nullAble<Type> {
