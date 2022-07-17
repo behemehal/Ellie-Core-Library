@@ -8,7 +8,7 @@ import char.ei;
 import vector.ei;
 
 @version = "1.0.0";
-@description = "Ellie string"
+@description = "Ellie string";
 @notConstructable = true;
 @dont_fix_variant=true;
 pub class string {
@@ -56,6 +56,7 @@ pub class string {
 
     @description = "Convert string to char vec";
     @availableSince = "3.7.3";
+    @native = true;
     @example = "
         v name = \"ahmet\";
         v chars = name.chars();

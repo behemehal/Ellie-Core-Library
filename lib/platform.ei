@@ -1,0 +1,17 @@
+import int.ei;
+import string.ei;
+
+pub class PlatformData {
+    pub v arch: string;
+    pub v os: string;
+}
+
+@description = "Print string";
+@native = true;
+@example = "print(\"Hello, world!\")";
+pub fn print(s: string);
+
+@description = "Print line";
+@native = true;
+@example = "println(\"Hello, world!\")";
+pub fn println(s: string);

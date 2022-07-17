@@ -5,7 +5,7 @@
 import string.ei;
 import int.ei;
 
-@dont_fix_variant=true;
+@dont_fix_variant = true;
 @notConstructable = true;
 pub class vector<Type> {
     @description = "Get type";

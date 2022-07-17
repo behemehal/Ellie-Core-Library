@@ -1,7 +1,7 @@
 /*
     Copyright (c) 2020 Behemehal. See license file for details
 */
-@version = "0.4.0"; //Changing this triggers build.rs
+@!version = "0.4.0"; //Changing this triggers build.rs
 pub import void.ei;
 pub import string.ei;
 pub import char.ei;
@@ -13,7 +13,7 @@ pub import array.ei;
 pub import vector.ei;
 pub import function.ei;
 pub import nullAble.ei;
-pub import class.ei;
+pub import object.ei;
 pub import int.ei;
 pub import dyn.ei;
 pub import error.ei;
