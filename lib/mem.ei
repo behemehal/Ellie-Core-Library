@@ -7,13 +7,13 @@ import vector.ei;
 import error.ei;
 import thread.ei;
 
-pub class TypeId {
+pub class typeId {
     pub v id: int;
     pub v size: int;
 }
 
 @dont_fix_variant=true;
-pub class RawType {
-    pub v type_id: TypeId;
+pub class rawType {
+    pub v type_id: typeId;
     pub v data: [int, *];
 }

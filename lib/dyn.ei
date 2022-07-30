@@ -7,5 +7,5 @@ import mem.ei;
 @dont_fix_variant=true;
 @notConstructable = true;
 pub class dyn {
-    pub v raw_type: RawType;
+    pub v raw_type: rawType;
 }

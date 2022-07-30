@@ -3,6 +3,7 @@
 */
 import string.ei;
 import int.ei;
+import float.ei;
 
 @dont_fix_variant=true;
 @notConstructable = true;
@@ -17,8 +18,10 @@ pub class bool {
     }
 }
 
-pub v true : bool = 1 as bool;
-pub v false : bool = 0 as bool;
+@ellie_deep_cast=true;
+c true : bool = 1 as bool;
+@ellie_deep_cast=false;
+c false : bool = 0 as bool;
 
 /*
  *      _.-^^---....,,--

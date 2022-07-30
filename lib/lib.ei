@@ -21,3 +21,5 @@ pub import mem.ei;
 pub import null.ei;
 pub import byte.ei;
 pub import double.ei;
+pub import platform.ei;
+pub import thread.ei;

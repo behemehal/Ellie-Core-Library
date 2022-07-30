@@ -1,7 +1,8 @@
 import int.ei;
 import string.ei;
+import void.ei;
 
-pub class PlatformData {
+pub class platformData {
     pub v arch: string;
     pub v os: string;
 }

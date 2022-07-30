@@ -11,9 +11,9 @@ pub class callStack {
 }
 
 @dont_fix_variant=true;
-@description = "Throw error at current thread";
+@description = "Panic current thread";
 @native=true;
-pub fn throw(err: string);
+pub fn panic(err: string);
 
 //@dont_fix_variant=true;
 //pub fn sleep(ms: int);
