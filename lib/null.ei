@@ -1,16 +1,21 @@
 /*
     Copyright (c) 2020 Behemehal. See license file for details
 */
-import string.ei;
+import "string.ei";
+import "bool.ei";
 
 @version = "1.0.0";
 @description = "Ellie null";
 @notConstructable = true;
 @dont_fix_variant=true;
-pub class null {
+pub class Null {
     @description = "Get type";
     @avoidUsage = true;
     pub fn getType() : string {
         ret "null";
     }
 }
+
+
+@ellie_deep_cast=null;
+pub c null : Null = 0 as Null;

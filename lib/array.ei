@@ -1,9 +1,10 @@
 /*
     Copyright (c) 2020 Behemehal. See license file for details
 */
-import string.ei;
-import int.ei;
-import void.ei;
+import "string.ei";
+import "int.ei";
+import "void.ei";
+import "function.ei";
 
 @version = "1.0.0";
 @description = "Ellie array";
@@ -54,4 +55,13 @@ pub class array<Type> {
         arr.unallocate();
     ";
     pub fn unallocate();
+
+
+    @description = "Check if array is empty";
+    @native=true;
+    @example = "
+        v arr = [];
+        print(arr.is_empty()); //true
+    ";
+    pub fn is_empty();
 }

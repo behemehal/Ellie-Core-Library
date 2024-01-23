@@ -1,31 +1,42 @@
 /*
     Copyright (c) 2020 Behemehal. See license file for details
 */
-import string.ei;
-import float.ei;
-import function.ei;
+import "string.ei";
+import "float.ei";
+import "function.ei";
+import "nullAble.ei";
+import "byte.ei";
+import "array.ei";
 
 @version = "1.0.0";
 @description = "Ellie integer";
 @notConstructable = true;
 @dont_fix_variant=true;
 pub class int {
+    v value: int;
     @description = "Convert integer to string";
-    @availableSince = "3.7.3";
     @example = "
         v age = 19;
-        print(age.toString()); //19
+        println(age.toString()); //19
     ";
-    pub fn toString() : string;
+    pub fn toString() : string {
+        ret self.value as string;
+    }
 
-    @description = "Get integer's size\n";
-    @volatile = true;
-    @availableSince = "3.7.3";
+    @description = "Convert integer to le_byte array";
     @example = "
-        v age = 12;
-        print(age.getSize()); //i8
+        v age = 19;
+        println(age.to_le_bytes()); //[19, 0, 0, 0]
     ";
-    pub fn getSize() : string;
+    pub fn to_le_bytes() : [byte];
+
+    @description = "Convert integer to be_byte array";
+    @example = "
+        v age = 19;
+        println(age.to_be_bytes()); //[0, 0, 0, 19]
+    ";
+    pub fn to_be_bytes() : [byte];
+
 
     @description = "Get type";
     @availableSince = "3.7.3";

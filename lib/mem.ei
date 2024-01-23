@@ -1,19 +1,231 @@
-/*
-    Copyright (c) 2020 Behemehal. See license file for details
-*/
-import string.ei;
-import int.ei;
-import vector.ei;
-import error.ei;
-import thread.ei;
+// /// These functions are native definings of internal functions of ellie.
+// /// With this utilities un-standard types such as Vec String and Collectives can be created.
+// /// Ellie has stack and heap memory seperated.
+// ///
+// /// Stack memory example
+// /// v test = 123;
+// ///
+// /// Number 123 is stored in stack memory.
+// /// You can access its raw data by `read_pointer` function.
+// ///
+// /// Heap memory example
+// /// v test = "Test";
+// ///
+// /// String "Test" is stored in heap memory, and reference to it is stored in stack memory.
+// /// You can access its raw data by `read_pointer` function.
+// /// It will give
+// /// RawType {
+// ///     type_id: TypeId {
+// ///         id: 6,
+// ///         size: 8
+// ///     },
+// ///     data: //UTF data
+// /// }
 
-pub class typeId {
-    pub v id: int;
-    pub v size: int;
-}
 
-@dont_fix_variant=true;
-pub class rawType {
-    pub v type_id: typeId;
-    pub v data: [int, *];
-}
+
+// import "string.ei";
+// import "int.ei";
+// import "vec.ei";
+// import "error.ei";
+// import "thread.ei";
+// import "thread.ei";
+// import "void.ei";
+// import "nullAble.ei";
+// import "array.ei";
+// import "dyn.ei";
+
+// pub class TypeId {
+//     co(id, size);
+//     pub v id: int;
+//     pub v size: int;
+// }
+
+// @dont_fix_variant=true;
+// pub class RawType {
+//     co(type_id, data);
+//     pub v type_id: TypeId;
+//     pub v data: [int];
+// }
+
+
+// @internalFunction;
+// @example = "
+//     fn main() {
+//         v size = platform_size();
+//         println(size); // 8 in x64 and 4 in x32
+//     }
+// ";
+// //pub fn platform_size() : int;
+
+// @internalFunction;
+// @example = "
+//     fn main() {
+//         v pointer = get_pointer_here();
+//         println(pointer); // 123
+//     }
+// ";
+// pub fn get_pointer_here() : int;
+
+// @internalFunction;
+// @example = "
+//     fn main() {
+//         v value = 123;
+//         v pointer = get_pointer(value);
+//         println(pointer); // 123
+//     }
+// ";
+// pub fn get_pointer(value: dyn): int;
+
+// @dangerous;
+// @internalFunction;
+// @example = "
+//     fn main() {
+//         v pointer = get_pointer_here();
+//         v rawType = read_pointer(pointer);
+//         println(value);
+//         /*
+//             RawType {
+//                 type_id: TypeId {
+//                     id: 1,
+//                     size: 8
+//                 },
+//                 data: [123]
+//             }
+//         */
+//     }
+// ";
+// pub fn read_pointer(pointer: int) : RawType;
+
+// @internalFunction;
+// @example = "
+//     fn main() {
+//         v pointer = get_pointer_here();
+//         v value = read_value(pointer) as int;
+//         println(value); // 123
+//     }
+// ";
+// pub fn read_value(pointer: int) : dyn;
+
+
+// @dangerous;
+// @internalFunction;
+// @description = "Write data to pointer. This function is dangerous and can cause undefined behavior. Use it with caution.";
+// @example = "
+//     fn main() {
+//         v pointer = get_pointer_here();
+
+//         println(read_pointer(pointer));
+//         /*
+//             RawType {
+//                 type_id: TypeId {
+//                     id: 1,
+//                     size: 8
+//                 },
+//                 data: [0]
+//             }
+//         */
+
+//         write_pointer(pointer, new TypeId(4, 1), [128]);
+
+//         println(read_pointer(pointer));
+//         /*
+//             RawType {
+//                 type_id: TypeId {
+//                     id: 4,
+//                     size: 1
+//                 },
+//                 data: [128]
+//             }
+//         */
+
+//         println(pointer);
+//         /*
+//             128
+//         */
+//     }
+// ";
+// pub fn write_pointer(pointer: int, type_id: TypeId, data: [int]);
+
+// @internalFunction;
+// @description = "Allocate heap pointer. This function is dangerous and can cause undefined behavior. Use it with caution or just dont use it.";
+// @example = "
+//     fn main() {
+//         v pointer : dyn = get_pointer_here();
+//         print(pointer); // 123
+
+//         // Allocate heap pointer to 123
+//         allocate_heap_pointer(pointer, 0);
+
+//         // Create array to pointer
+
+//         // Write array to pointer with reference to heap pointer.
+//         write_pointer(pointer, new TypeId(9, 1), pointer.to_le_bytes());
+
+
+//         (pointer as Array<int>).push(1);
+//         println(pointer); // [1];
+//     }
+// ";
+// pub fn allocate_heap_pointer(pointer: int, size: int);
+
+// @internalFunction;
+// @description = "Deallocate heap pointer. This function is dangerous and can cause undefined behavior. Use it with caution or just dont use it.";
+// @example = "
+//     fn main() {
+//         v value = 123;
+//         v pointer = get_pointer(value);
+//         print(pointer); // 123
+//         deallocate_heap_pointer(pointer);
+//         print(value);
+//         /*
+//             ThreadPanic: NullReference: 123
+//         */
+//     }
+// ";
+// pub fn deallocate_heap_pointer(pointer: int);
+
+// @internalFunction;
+// @description = "Get heap pointer size.";
+// @example = "
+//     fn main() {
+//         v value = 123;
+//         v pointer = get_pointer(value);
+//         print(pointer); // 123
+//         print(get_heap_pointer_size(pointer)); // 8
+//     }
+// ";
+// pub fn get_heap_pointer_size(pointer: int) : int;
+
+// @internalFunction;
+// @description = "Insert data to heap pointer. This function is dangerous and can cause undefined behavior. Use it with caution or just dont use it.";
+// @example = "
+//     fn main() {
+//         v pointer = get_pointer_here();
+//         allocate_heap_pointer(pointer, 0);
+//         insert_data_to_heap_data_range(pointer, 0, 8, [1, 2, 3, 4, 5, 6, 7, 8]);
+//     }
+// ";
+// pub fn insert_data_to_heap_data_range(pointer: int, start: int, end: int, data: [int]);
+
+// @internalFunction;
+// @description = "Get data from heap pointer";
+// @example = "
+//     fn main() {
+//         v pointer = get_pointer_here();
+//         allocate_heap_pointer(pointer, 8);
+//         println(get_data_from_heap_data_range(pointer, 0, 8)); // [1, 2, 3, 4, 5, 6, 7, 8]
+//     }
+// ";
+// pub fn get_data_from_heap_data_range(pointer: int, start: int, end: int) : RawType;
+
+// @internalFunction;
+// @description = "Resize heap pointer. This function is dangerous and can cause undefined behavior. Use it with caution or just dont use it.";
+// @example = "
+//     fn main() {
+//         v pointer = get_pointer_here();
+//         allocate_heap_pointer(pointer, 0);
+//         resize_heap_pointer(pointer, 8);
+//     }
+// ";
+// pub fn resize_heap_pointer(pointer: int, size: int);

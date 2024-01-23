@@ -1,0 +1,153 @@
+/*
+    Copyright (c) 2020 Behemehal. See license file for details
+*/
+
+import "vec.ei";
+import "string.ei";
+import "int.ei";
+import "void.ei";
+import "cloak.ei";
+import "nullAble.ei";
+import "null.ei";
+import "bool.ei";
+import "dyn.ei";
+
+@dont_fix_variant=true;
+@notConstructable = true;
+pub class Table<Key, Value> {
+    pri v _keys = new Vec<Key>();
+    pri v _values = new Vec<Value>();
+    pri v freed_places = new Vec<int>();
+
+    @description = "Insert value to collective";
+    @example = "
+        v table = new Table<string, int>();
+        col.insert(\"Ahmet\", 12);
+        col.insert(\"Mehmet\", 13);
+    ";
+    pub fn insert(key: Key, value: Value) {
+        if self.freed_places.is_empty() {
+            self._keys.push(key);
+            self._values.push(value);
+        } else {
+            v freed_place = self.freed_places.pop();
+            self._keys.set(freed_place!, key);
+            self._values.set(freed_place!, value);
+        }
+    }
+
+    @description = "Get value by key";
+    @example = "
+        v table = new Table<string, int>();
+        col.insert(\"Ahmet\", 12);
+        col.insert(\"Mehmet\", 13);
+        print(col.get(\"Ahmet\")); //12
+    ";
+    pub fn get(key: Key) : ?Value {
+        v start = 0;
+        v found : ?Value;
+        loop start < self._keys.len() {
+            if self._keys.at(start).is_not_null() && self._keys.at(start).resolve() == key {
+                found = self._values.at(start);
+                brk;
+            }
+            start += 1;
+        }
+        ret found;
+    }
+
+    @description = "Set value by key";
+    @example = "
+        v table = new Table<string, int>();
+        col.insert(\"Ahmet\", 12);
+        col.insert(\"Mehmet\", 13);
+        col.set(\"Ahmet\", 14);
+        print(col.get(\"Ahmet\")); //14
+    ";
+    pub fn set(key: Key, value: Value) {
+        v start = 0;
+        loop start <= self._keys.len() {
+            if self._keys.at(start).is_not_null() && self._keys.at(start).resolve() == key {
+                self._values.set(start, value);
+                brk;
+            }
+            start += 1;
+        }
+    }
+
+    @description = "Remove value by key";
+    @example = "
+        v table = new Table<string, int>();
+        col.insert(\"Ahmet\", 12);
+        col.insert(\"Mehmet\", 13);
+        col.remove(\"Ahmet\");
+        print(col.get(\"Ahmet\")); //null
+    ";
+    pub fn remove(key: Key) {
+        v start = 0;
+        loop start < self._keys.len() {
+            v key_at_start = self._keys.at(start);
+            if key_at_start.is_not_null() && key_at_start.resolve() == key {
+                self._keys.set(start, null);
+                self._values.set(start, null);
+                self.freed_places.push(start);
+            }
+            start += 1;
+        }
+    }
+
+    @description = "Get all keys of collective";
+    @example = "
+        v table = new Table<string, int>();
+        col.insert(\"Ahmet\", 12);
+        col.insert(\"Mehmet\", 13);
+        print(col.keys()); //[\"Ahmet\", \"Mehmet\"]
+    ";
+    pub fn keys() : array<Key> {
+        ret self._keys;
+    }
+
+    @description = "Get all values of collective";
+    @example = "
+        v table = new Table<string, int>();
+        col.insert(\"Ahmet\", 12);
+        col.insert(\"Mehmet\", 13);
+        print(col.values()); //[12, 13]
+    ";
+    pub fn values() : array<Value> {
+        ret self._values;
+    }
+
+    @description = "Get all values of collective";
+    @example = "
+        v table = new Table<string, int>();
+        col.insert(\"Ahmet\", 12);
+        col.insert(\"Mehmet\", 13);
+        print(col.values()); //[12, 13]
+    ";
+    pub fn values() : array<(Key, Value)> {
+        v values = new array<(Key, Value)>();
+        v start = 0;
+        loop start <= self._keys.len() {
+            if self._keys[start] != null {
+                values.push(self._keys[start], self._values[start]);
+            }
+            start += 1;
+        }
+        ret values;
+    }
+
+    @description = "Clear all values of collective";
+    @example = "
+        v table = new Table<string, int>();
+        col.insert(\"Ahmet\", 12);
+        col.insert(\"Mehmet\", 13);
+        col.clear();
+        print(col.keys()); //[]
+    ";
+    pub fn clear() {
+        self._keys.clear();
+        self._values.clear();
+        self.freed_places.clear();
+    }
+}

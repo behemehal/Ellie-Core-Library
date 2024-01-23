@@ -1,11 +1,32 @@
-import int.ei;
-import string.ei;
-import void.ei;
+import "int.ei";
+import "string.ei";
+import "void.ei";
+import "function.ei";
 
 pub class platformData {
-    pub v arch: string;
-    pub v os: string;
+    pub v arch = get_arch();
+    pub v os = get_os();
+    pub v eol = get_eol();
 }
+
+
+pub fn get_arch() : string;
+pub fn get_os() : string;
+pub fn get_eol() : string;
+
+pub class EllieBuildInfo {
+    pub v engine_version = get_engine_version();
+    pub v engine_version_name = get_engine_version_name();
+    pub v engine_build_date = get_engine_build_date();
+    pub v engine_build_git_hash = get_engine_build_git_hash();
+    pub v engine_build_git_branch = get_engine_build_git_branch();
+}
+
+pub fn get_engine_version() : string;
+pub fn get_engine_version_name() : string;
+pub fn get_engine_build_date() : string;
+pub fn get_engine_build_git_hash() : string;
+pub fn get_engine_build_git_branch() : string;
 
 @description = "Print string";
 @native = true;
@@ -16,3 +37,8 @@ pub fn print(s: string);
 @native = true;
 @example = "println(\"Hello, world!\")";
 pub fn println(s: string);
+
+@description = "Print error";
+@native = true;
+@example = "panic(\"Hello, world!\")";
+pub fn panic(s: string);

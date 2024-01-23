@@ -1,6 +1,6 @@
-name: ellieStd
+name: ellieCore
 version: 0.2.1
-description: Ellie-Standard-Types
+description: Ellie-Core contains core types for Ellie
 author: Behemehal
 license: GPL-2.0
 dependencies:

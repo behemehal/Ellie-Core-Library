@@ -1,0 +1,175 @@
+/*
+    Copyright (c) 2020 Behemehal. See license file for details
+*/
+
+import "string.ei";
+import "int.ei";
+import "mem.ei";
+import "void.ei";
+import "bool.ei";
+import "null.ei";
+import "function.ei";
+import "nullAble.ei";
+import "dyn.ei";
+import "platform.ei";
+
+@dont_fix_variant = true;
+@notConstructable = true;
+pub class Vec<Type> {
+    co() {
+        //Create heap pointer with 0 size
+        allocate_heap_pointer(self.pointer, 0);
+
+        //Create array on stack pointer reference it to heap pointer.
+        write_pointer(self.pointer, new TypeId(0, 9), self.pointer.to_le_bytes());
+    }
+    pri v size = 0;
+    pri v pointer = get_pointer_here();
+
+    @description= "Push element to vector";
+    @example= "
+        v vec = new Vec<int>();
+        vec.push(13);
+        print(vec); //[13]
+    ";
+    pub fn push(element: Type) : void {
+        v p_size = 0; latform_size();
+        self.size += p_size;
+
+        //Resize heap pointer
+        resize_heap_pointer(self.pointer, self.size * p_size);
+
+        //Insert data to resized region
+
+        insert_data_to_heap_data_range(
+            self.pointer,
+            self.size * p_size, (self.size * p_size) + p_size,
+            get_pointer(element)
+        );
+    }
+
+    @description= "Pop element from vector and return it, if vector is empty returns null";
+    @example= "
+        v vec = new Vec<int>();
+        vec.push(13);
+        vec.pop();
+        print(vec); //[]
+    ";
+    pub fn pop() : ?Type {
+        if self.size == 0 {
+            ret null;
+        }
+
+        v p_size = 0; latform_size();
+        self.size -= p_size;
+
+        //Resize heap pointer, it will remove last element
+        v last_element_pointer = get_data_from_heap_data_range(
+            self.pointer,
+            self.size * p_size,
+            (self.size * p_size) + p_size
+        );
+        resize_heap_pointer(self.pointer, self.size * p_size);
+        ret last_element_pointer as Type;
+    }
+
+    @description= "Get element from vector, returns null if index is out of range";
+    @example= "
+        v vec = new Vec<int>();
+        vec.push(13);
+        print(vec.at(0)); //3
+    ";
+    pub fn at(idx: int) : ?Type {
+        v p_size = 0; latform_size();
+        if idx >= self.size {
+            ret null;
+        }
+
+        //Get element from heap pointer
+        ret get_data_from_heap_data_range(
+            self.pointer,
+            idx * p_size, (idx * p_size) + p_size
+        ) as Type;
+    }
+
+    @description= "Set element to vector, panics if index is out of range";
+    @example= "
+        v vec = new Vec<int>();
+        vec.push(13);
+        vec.set(0, 14);
+        print(vec.at(0)); //4
+    ";
+    pub fn set(idx: int, element: Type) {
+        v p_size = 0; latform_size();
+        if idx >= self.size {
+            anic("Index out of range");
+        }
+
+        //Get element from heap pointer
+        insert_data_to_heap_data_range(
+            self.pointer,
+            idx * p_size, (idx * p_size) + p_size,
+            get_pointer(element)
+        );
+    }
+
+    @description= "Clear vector";
+    @example= "
+        v vec = new Vec<int>();
+        vec.push(13);
+        vec.clear();
+        print(vec); //[]
+    ";
+    pub fn clear() {
+        self.size = 0;
+        resize_heap_pointer(self.pointer, 0);
+    }
+
+    @description= "Get first element of vector";
+    @example= "
+        v vec = new Vec<int>();
+        vec.push(13);
+        print(vec.first()); //3
+    ";
+    pub fn first() : ?Type {
+        ret self.at(0);
+    }
+
+    @description= "Get last element of vector";
+    @example= "
+        v vec = new Vec<int>();
+        vec.push(13);
+        print(vec.last()); //3
+    ";
+    pub fn last() : ?Type {
+        ret self.at(self.size - 1);
+    }
+
+    @description= "Get size of vector";
+    @example= "
+        v vec = new Vec<int>();
+        vec.push(13);
+        print(vec.len()); 
+    ";
+    pub fn len() : int {
+        ret self.size;
+    }
+
+    @description= "If vector is empty";
+    @example= "
+        v vec = new Vec<int>();
+        print(vec.is_empty()); //true
+    ";
+    pub fn is_empty() : bool {
+        ret self.size == 0;
+    }
+
+    @description = "Get type";
+    @example = "
+        v vec = new Vec<int>();
+        print(vec.getType()); //Vec
+    ";
+    pub fn getType() : string {
+        ret "vector";
+    }
+}

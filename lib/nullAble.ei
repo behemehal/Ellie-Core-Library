@@ -2,16 +2,41 @@
     Copyright (c) 2020 Behemehal. See license file for details
 */
 
-import thread.ei;
-import void.ei;
+import "thread.ei";
+import "void.ei";
+import "null.ei";
+import "dyn.ei";
+import "bool.ei";
+import "platform.ei";
+import "function.ei";
+import "string.ei";
 
 @dont_fix_variant=true;
 pub class nullAble<Type> {
     co(type);
     pub v type : Type;
-    pub fn resolve() {
-        //if this.type == null {
-        //    panic("nullAble.resolve() called on null");
-        //}
+
+    @description = "Resovles the nullAble to its type";
+    @example = "
+        fn main() {
+            v vec = new Vec<int>();
+            vec.at(3)! // This will panic because the value at index 3 is null
+            vec.at(3).resolve // Same but function call, also will panic because the value at index 3 is null
+        }
+    ";
+    pub fn resolve() : Type {
+        if self.type == null {
+            //panic("nullAble.resolve() called on null");
+        } else {
+            ret self.type;
+        }
+    }
+
+    pub fn is_null() : bool {
+        ret self.type == null;
+    }
+
+    pub fn is_not_null() : bool {
+        ret self.type != null;
     }
 }
