@@ -88,8 +88,8 @@ pub class Table<Key, Value> {
         loop start < self._keys.len() {
             v key_at_start = self._keys.at(start);
             if key_at_start.is_not_null() && key_at_start.resolve() == key {
-                self._keys.set(start, null);
-                self._values.set(start, null);
+                self._keys.remove(start);
+                self._values.remove(start);
                 self.freed_places.push(start);
             }
             start += 1;
@@ -103,7 +103,7 @@ pub class Table<Key, Value> {
         col.insert(\"Mehmet\", 13);
         print(col.keys()); //[\"Ahmet\", \"Mehmet\"]
     ";
-    pub fn keys() : array<Key> {
+    pub fn keys() : Vec<Key> {
         ret self._keys;
     }
 
@@ -114,11 +114,11 @@ pub class Table<Key, Value> {
         col.insert(\"Mehmet\", 13);
         print(col.values()); //[12, 13]
     ";
-    pub fn values() : array<Value> {
+    pub fn values() : Vec<Value> {
         ret self._values;
     }
 
-    @description = "Get all values of collective";
+/*     @description = "Get all values of collective";
     @example = "
         v table = new Table<string, int>();
         col.insert(\"Ahmet\", 12);
@@ -135,7 +135,7 @@ pub class Table<Key, Value> {
             start += 1;
         }
         ret values;
-    }
+    } */
 
     @description = "Clear all values of collective";
     @example = "

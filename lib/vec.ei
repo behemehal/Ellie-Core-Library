@@ -33,7 +33,7 @@ pub class Vec<Type> {
         print(vec); //[13]
     ";
     pub fn push(element: Type) : void {
-        v p_size = 0; latform_size();
+        v p_size = platform_size();
         self.size += p_size;
 
         //Resize heap pointer
@@ -60,7 +60,7 @@ pub class Vec<Type> {
             ret null;
         }
 
-        v p_size = 0; latform_size();
+        v p_size = platform_size();
         self.size -= p_size;
 
         //Resize heap pointer, it will remove last element
@@ -70,7 +70,7 @@ pub class Vec<Type> {
             (self.size * p_size) + p_size
         );
         resize_heap_pointer(self.pointer, self.size * p_size);
-        ret last_element_pointer as Type;
+        ret last_element_pointer as dyn;
     }
 
     @description= "Get element from vector, returns null if index is out of range";
@@ -80,7 +80,7 @@ pub class Vec<Type> {
         print(vec.at(0)); //3
     ";
     pub fn at(idx: int) : ?Type {
-        v p_size = 0; latform_size();
+        v p_size = platform_size();
         if idx >= self.size {
             ret null;
         }
@@ -89,7 +89,7 @@ pub class Vec<Type> {
         ret get_data_from_heap_data_range(
             self.pointer,
             idx * p_size, (idx * p_size) + p_size
-        ) as Type;
+        ) as dyn;
     }
 
     @description= "Set element to vector, panics if index is out of range";
@@ -100,9 +100,9 @@ pub class Vec<Type> {
         print(vec.at(0)); //4
     ";
     pub fn set(idx: int, element: Type) {
-        v p_size = 0; latform_size();
+        v p_size = platform_size();
         if idx >= self.size {
-            anic("Index out of range");
+            panic("Index out of range");
         }
 
         //Get element from heap pointer
@@ -111,6 +111,25 @@ pub class Vec<Type> {
             idx * p_size, (idx * p_size) + p_size,
             get_pointer(element)
         );
+    }
+
+    @description= "Remove element from vector, panics if index is out of range";
+    @example= "
+        v vec = new Vec<int>();
+        vec.push(13);
+        vec.remove(0);
+        print(vec); //[]
+    ";
+    pub fn remove(idx: int) {
+        v p_size = platform_size();
+
+        insert_data_to_heap_data_range(
+            self.pointer,
+            self.size * p_size,
+            (self.size * p_size) + p_size,
+            get_pointer(0)
+        );
+        self.size -= p_size;
     }
 
     @description= "Clear vector";
