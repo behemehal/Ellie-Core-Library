@@ -7,6 +7,6 @@ import "nullAble.ei";
 @dont_fix_variant=true;
 @notConstructable = true;
 pub class object {
-    pub c name: string;
-    pub c hash: string;
+    pub v name: string;
+    pub v hash: string;
 }
