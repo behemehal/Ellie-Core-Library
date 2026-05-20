@@ -1,0 +1,62 @@
+import "string.ei";
+import "int.ei";
+import "bool.ei";
+import "dyn.ei";
+import "array.ei";
+
+// ── FFI / native bridge primitives ────────────────────────────────────────────
+
+@description = "Load a native library (.dll/.so/.dylib) and return an opaque handle";
+pub fn load_library_handle(path: string) : int;
+
+@description = "Call a function in a previously loaded native library";
+pub fn call_library_function(handle: int, name: string, args: [(string, dyn)]) : dyn;
+
+@description = "Typed wrapper around a loaded native bridge library";
+@dont_fix_variant = true;
+pub class NativeBridge {
+    co(path: string) {
+        self.handle = load_library_handle(path);
+    }
+    pri v handle: int;
+
+    @description = "Call a function exported by this bridge";
+    pub fn call(func: string, args: [(string, dyn)]) : dyn {
+        ret call_library_function(self.handle, func, args);
+    }
+
+    @description = "Returns true if the library was loaded successfully (handle != 0)";
+    pub fn is_loaded() : bool {
+        ret self.handle != 0;
+    }
+}
+
+@description = "Load a native bridge library from the given path and return a NativeBridge instance";
+pub fn init_bridge(path: string) : NativeBridge {
+    ret new NativeBridge(path);
+}
+
+// ── Process / shell ────────────────────────────────────────────────────────────
+
+@description = "Check whether a command is available on PATH";
+pub fn command_exists(name: string) : bool;
+
+@description = "Run a command with arguments; inherits stdout/stderr; returns exit code";
+pub fn run_command(cmd: string, args: [string]) : int;
+
+@description = "Run a command suppressing all output; returns exit code";
+pub fn run_command_silent(cmd: string, args: [string]) : int;
+
+@description = "Run a command and capture its stdout as a string";
+pub fn run_command_output(cmd: string, args: [string]) : string;
+
+// ── Environment ────────────────────────────────────────────────────────────────
+
+@description = "Get an environment variable; returns empty string if not set";
+pub fn get_env(name: string) : string;
+
+@description = "Set an environment variable for the current process";
+pub fn set_env(name: string, value: string);
+
+@description = "Return the current working directory as a string";
+pub fn get_cwd() : string;

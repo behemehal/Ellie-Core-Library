@@ -1,0 +1,11 @@
+[package]
+name = "ellie_core_native"
+version = "0.3.0"
+edition = "2021"
+description = "Native Rust implementations for the Ellie Core Library"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+ellie_native_bridge = { path = "../../EllieNativeBridge", features = ["rust_bridge"] }

@@ -1,0 +1,14 @@
+C:\Users\ahmet\Desktop\Ellie-Language\Ellie-Core-Library\native\target\debug\deps\serde-87dee2d3a7c01f43.d: C:\Users\ahmet\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\lib.rs C:\Users\ahmet\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\integer128.rs C:\Users\ahmet\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\mod.rs C:\Users\ahmet\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\de.rs C:\Users\ahmet\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\ser.rs C:\Users\ahmet\Desktop\Ellie-Language\Ellie-Core-Library\native\target\debug\build\serde-7564c01fc801228a\out/private.rs
+
+C:\Users\ahmet\Desktop\Ellie-Language\Ellie-Core-Library\native\target\debug\deps\libserde-87dee2d3a7c01f43.rlib: C:\Users\ahmet\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\lib.rs C:\Users\ahmet\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\integer128.rs C:\Users\ahmet\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\mod.rs C:\Users\ahmet\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\de.rs C:\Users\ahmet\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\ser.rs C:\Users\ahmet\Desktop\Ellie-Language\Ellie-Core-Library\native\target\debug\build\serde-7564c01fc801228a\out/private.rs
+
+C:\Users\ahmet\Desktop\Ellie-Language\Ellie-Core-Library\native\target\debug\deps\libserde-87dee2d3a7c01f43.rmeta: C:\Users\ahmet\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\lib.rs C:\Users\ahmet\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\integer128.rs C:\Users\ahmet\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\mod.rs C:\Users\ahmet\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\de.rs C:\Users\ahmet\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\ser.rs C:\Users\ahmet\Desktop\Ellie-Language\Ellie-Core-Library\native\target\debug\build\serde-7564c01fc801228a\out/private.rs
+
+C:\Users\ahmet\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\lib.rs:
+C:\Users\ahmet\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\integer128.rs:
+C:\Users\ahmet\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\mod.rs:
+C:\Users\ahmet\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\de.rs:
+C:\Users\ahmet\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\ser.rs:
+C:\Users\ahmet\Desktop\Ellie-Language\Ellie-Core-Library\native\target\debug\build\serde-7564c01fc801228a\out/private.rs:
+
+# env-dep:OUT_DIR=C:\\Users\\ahmet\\Desktop\\Ellie-Language\\Ellie-Core-Library\\native\\target\\debug\\build\\serde-7564c01fc801228a\\out
