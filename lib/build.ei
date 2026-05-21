@@ -60,3 +60,17 @@ pub fn set_env(name: string, value: string);
 
 @description = "Return the current working directory as a string";
 pub fn get_cwd() : string;
+
+@description = "Change the current working directory. Returns true on success.";
+pub fn set_cwd(path: string) : bool;
+
+// ── Process / current process ─────────────────────────────────────────────────
+
+@description = "Arguments passed to the current Ellie program (excluding the binary name).";
+pub fn process_args() : [string];
+
+@description = "Process id of the running Ellie binary.";
+pub fn process_pid() : int;
+
+@description = "Terminate the running Ellie program with the given exit code.";
+pub fn process_exit(code: int);

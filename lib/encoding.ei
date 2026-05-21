@@ -1,0 +1,19 @@
+/*
+    Copyright (c) 2020 Behemehal. See license file for details
+
+    Text encoding primitives. Binary I/O will join this module once
+    EllieData::Bytes lands; until then everything is string-in / string-out.
+*/
+import "string.ei";
+
+@description = "Base64-encode a UTF-8 string.";
+pub fn base64_encode(s: string) : string;
+
+@description = "Base64-decode a string to UTF-8. Returns empty string on invalid input.";
+pub fn base64_decode(s: string) : string;
+
+@description = "Hex-encode a UTF-8 string (lowercase).";
+pub fn hex_encode(s: string) : string;
+
+@description = "Hex-decode a string to UTF-8. Returns empty string on invalid input.";
+pub fn hex_decode(s: string) : string;

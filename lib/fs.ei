@@ -1,0 +1,68 @@
+/*
+    Copyright (c) 2020 Behemehal. See license file for details
+
+    Filesystem primitives. Binary I/O and streaming `File` handles
+    will land alongside the EllieData::Handle bridge addition.
+*/
+import "string.ei";
+import "int.ei";
+import "bool.ei";
+import "array.ei";
+import "void.ei";
+import "bytes.ei";
+
+@description = "Read a file as a UTF-8 string. Returns empty string on error.";
+pub fn fs_read_file(path: string) : string;
+
+@description = "Write a UTF-8 string to a file, overwriting if it exists. Returns true on success.";
+pub fn fs_write_file(path: string, contents: string) : bool;
+
+@description = "Append a UTF-8 string to a file. Returns true on success.";
+pub fn fs_append_file(path: string, contents: string) : bool;
+
+@description = "Check if a path exists.";
+pub fn fs_exists(path: string) : bool;
+
+@description = "Check if a path is a regular file.";
+pub fn fs_is_file(path: string) : bool;
+
+@description = "Check if a path is a directory.";
+pub fn fs_is_dir(path: string) : bool;
+
+@description = "Remove a file. Returns true on success.";
+pub fn fs_remove_file(path: string) : bool;
+
+@description = "Remove an empty directory. Returns true on success.";
+pub fn fs_remove_dir(path: string) : bool;
+
+@description = "Recursively remove a directory and its contents. Returns true on success.";
+pub fn fs_remove_dir_all(path: string) : bool;
+
+@description = "Rename or move a path. Returns true on success.";
+pub fn fs_rename(from: string, to: string) : bool;
+
+@description = "Create a single directory. Fails if the parent does not exist.";
+pub fn fs_create_dir(path: string) : bool;
+
+@description = "Create a directory and all of its parents.";
+pub fn fs_create_dir_all(path: string) : bool;
+
+@description = "List entries of a directory as an array of names. Empty on error.";
+pub fn fs_read_dir(path: string) : [string];
+
+@description = "Return file size in bytes, or -1 on error.";
+pub fn fs_size(path: string) : int;
+
+@description = "Return last-modified time as Unix epoch milliseconds, or -1 on error.";
+pub fn fs_modified_ms(path: string) : int;
+
+// ── Binary I/O ────────────────────────────────────────────────────────────────
+
+@description = "Read the entire file into a new bytes buffer. Empty buffer on error.";
+pub fn fs_read_bytes(path: string) : bytes;
+
+@description = "Write a bytes buffer to a file. Returns true on success.";
+pub fn fs_write_bytes(path: string, b: bytes) : bool;
+
+@description = "Read up to len bytes from path into b at offset. Returns bytes read, or -1 on error. Zero-copy: writes directly into the buffer.";
+pub fn fs_read_into(path: string, b: bytes, offset: int, len: int) : int;

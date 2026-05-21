@@ -1,0 +1,42 @@
+/*
+    Copyright (c) 2020 Behemehal. See license file for details
+
+    Time / date primitives. All timestamps are Unix epoch milliseconds.
+    All component accessors (year/month/...) interpret the timestamp as UTC.
+*/
+import "string.ei";
+import "int.ei";
+
+@description = "Current Unix time in milliseconds.";
+pub fn time_now_ms() : int;
+
+@description = "Current Unix time in seconds.";
+pub fn time_now_s() : int;
+
+@description = "Current time as an ISO 8601 string (UTC), e.g. 2026-05-21T14:33:21.000Z.";
+pub fn time_now_iso() : string;
+
+@description = "Format a Unix-ms timestamp using a strftime-style format string (UTC).";
+@example = "time_format(time_now_ms(), \"%Y-%m-%d %H:%M:%S\")";
+pub fn time_format(ms: int, fmt: string) : string;
+
+@description = "Parse a time string using a strftime-style format. Returns Unix ms, or -1 on error.";
+pub fn time_parse(s: string, fmt: string) : int;
+
+@description = "Year of a Unix-ms timestamp (UTC).";
+pub fn time_year(ms: int) : int;
+
+@description = "Month (1-12) of a Unix-ms timestamp (UTC).";
+pub fn time_month(ms: int) : int;
+
+@description = "Day of month (1-31) of a Unix-ms timestamp (UTC).";
+pub fn time_day(ms: int) : int;
+
+@description = "Hour (0-23) of a Unix-ms timestamp (UTC).";
+pub fn time_hour(ms: int) : int;
+
+@description = "Minute (0-59) of a Unix-ms timestamp (UTC).";
+pub fn time_minute(ms: int) : int;
+
+@description = "Second (0-59) of a Unix-ms timestamp (UTC).";
+pub fn time_second(ms: int) : int;

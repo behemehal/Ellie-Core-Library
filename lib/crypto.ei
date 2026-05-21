@@ -1,0 +1,17 @@
+/*
+    Copyright (c) 2020 Behemehal. See license file for details
+
+    Cryptographic primitives. Hash output is lowercase hex.
+    `random_int` is NOT cryptographically secure (see implementation note).
+*/
+import "string.ei";
+import "int.ei";
+
+@description = "SHA-256 of a UTF-8 string, returned as lowercase hex.";
+pub fn crypto_sha256_hex(s: string) : string;
+
+@description = "SHA-512 of a UTF-8 string, returned as lowercase hex.";
+pub fn crypto_sha512_hex(s: string) : string;
+
+@description = "Random integer in [min, max). NOT cryptographically secure; use for sampling/jitter only.";
+pub fn random_int(min: int, max: int) : int;

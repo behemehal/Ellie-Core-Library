@@ -1,0 +1,81 @@
+/*
+    Copyright (c) 2020 Behemehal. See license file for details
+
+    Mutable, growable byte buffer with a read/write cursor.
+    Backed by a heap-resident Vec<u8>; intrinsics use absolute (offset, len)
+    so they're stateless. Streaming wrappers (fs_read_chunk, etc.) layer
+    cursor logic on top in pure Ellie.
+*/
+import "string.ei";
+import "int.ei";
+import "byte.ei";
+import "void.ei";
+import "function.ei";
+
+@dont_fix_variant;
+@notConstructable;
+@description = "Mutable byte buffer";
+pub class bytes {
+    @description = "Length in bytes";
+    pub fn len() : int             { ret bytes_len(self); }
+
+    @description = "Current read/write cursor (in [0, len])";
+    pub fn pos() : int             { ret bytes_pos(self); }
+
+    @description = "Set the cursor to an absolute position";
+    pub fn set_pos(p: int)         { bytes_set_pos(self, p); }
+
+    @description = "Reset the cursor to 0";
+    pub fn rewind()                { bytes_set_pos(self, 0); }
+
+    @description = "Read the byte at index i (returned as int 0..255 — language has no int↔byte coercion yet)";
+    pub fn get(i: int) : int       { ret bytes_get(self, i); }
+
+    @description = "Write a byte at index i (low 8 bits of v are used)";
+    pub fn set(i: int, v: int)     { bytes_set(self, i, v); }
+
+    @description = "Return a copy of [start, end)";
+    pub fn slice(s: int, e: int) : bytes { ret bytes_slice(self, s, e); }
+
+    @description = "Append the contents of `other` to this buffer";
+    pub fn append(other: bytes)    { bytes_append(self, other); }
+
+    @description = "Interpret the buffer as UTF-8 (lossy)";
+    pub fn to_string() : string    { ret bytes_to_string(self); }
+}
+
+// ── Intrinsics ────────────────────────────────────────────────────────────────
+
+@description = "Allocate a zero-filled bytes buffer of length n";
+pub fn bytes_alloc(n: int) : bytes;
+
+@description = "Allocate a bytes buffer containing the UTF-8 bytes of s";
+pub fn bytes_from_string(s: string) : bytes;
+
+// First arg is `dyn` on every mutator so the bytes class methods can pass
+// `self` cleanly — the language has no first-class type for `self == bytes`
+// inside a body-less class. The runtime always validates the heap kind.
+
+@description = "Length in bytes";
+pub fn bytes_len(b: dyn) : int;
+
+@description = "Current cursor";
+pub fn bytes_pos(b: dyn) : int;
+
+@description = "Set the cursor (clamped to len)";
+pub fn bytes_set_pos(b: dyn, p: int);
+
+@description = "Read the byte at index i, or 0 if out of bounds. Returned as int 0..255.";
+pub fn bytes_get(b: dyn, i: int) : int;
+
+@description = "Write a byte at index i (low 8 bits of v are used; no-op if out of bounds)";
+pub fn bytes_set(b: dyn, i: int, v: int);
+
+@description = "Return a copy of [start, end). Indices are clamped to the valid range.";
+pub fn bytes_slice(b: dyn, start: int, end: int) : bytes;
+
+@description = "Append the contents of src to dst, growing dst";
+pub fn bytes_append(dst: dyn, src: dyn);
+
+@description = "Interpret the buffer as UTF-8 (lossy: invalid sequences become replacement chars)";
+pub fn bytes_to_string(b: dyn) : string;

@@ -1,0 +1,212 @@
+// Canonical runtime stdlib bundle shipped next to the `ellie` binary.
+// Resolved by `import "std";` in user programs.
+//
+// This is a curated single-file bundle: minimal class stubs for the built-in
+// types plus signatures for every native exposed by libellie_core_native.
+// The full Ellie-Core-Library/lib/ tree is the long-term target — it stays
+// next to this file as the eventual source of truth. Once the gen2 parser
+// handles its full syntax, this file goes away.
+
+@dont_fix_variant;
+pub class Null {}
+
+@ellie_deep_cast=null;
+c null : Null = 0 as Null;
+
+@dont_fix_variant;
+pub class int {}
+
+@dont_fix_variant;
+pub class float {}
+
+@dont_fix_variant;
+pub class double {}
+
+@dont_fix_variant;
+pub class dyn {}
+
+@dont_fix_variant;
+pub class string {
+    pri v value : string;
+    co(value);
+
+    pub fn len() : int { ret 0; }
+}
+
+@dont_fix_variant;
+pub class char {}
+
+@dont_fix_variant;
+pub class bool {}
+
+@dont_fix_variant;
+pub class byte {}
+
+@dont_fix_variant;
+pub class void {}
+
+@dont_fix_variant;
+pub class function {}
+
+@dont_fix_variant;
+pub class array<T> {
+    co(arr);
+    v arr: [T];
+
+    pub fn len() : int {
+        ret array_len(self);
+    }
+}
+
+@dont_fix_variant;
+pub class cloak<T> {
+    pri v value : T;
+    co(value);
+}
+
+@ellie_deep_cast=true;
+pub c true : bool = 1 as bool;
+@ellie_deep_cast=false;
+pub c false : bool = 0 as bool;
+
+@dont_fix_variant;
+pub class nullAble<T> {
+    pri v value : T;
+    co(value);
+    pub fn is_null() : bool { ret self.value == null; }
+    pub fn unwrap() : T {
+        if self.value == null { panic("Error: value is null"); }
+        ret self.value;
+    }
+}
+
+// ── bytes class ──────────────────────────────────────────────────────────────
+
+// ── net class stubs ──────────────────────────────────────────────────────────
+
+@dont_fix_variant;
+pub class TcpStream {}
+
+@dont_fix_variant;
+pub class TcpListener {}
+
+@dont_fix_variant;
+pub class UdpSocket {}
+
+@dont_fix_variant;
+pub class bytes {
+    pub fn len() : int             { ret bytes_len(self); }
+    pub fn pos() : int             { ret bytes_pos(self); }
+    pub fn set_pos(p: int)         { bytes_set_pos(self, p); }
+    pub fn rewind()                { bytes_set_pos(self, 0); }
+    pub fn get(i: int) : int       { ret bytes_get(self, i); }
+    pub fn set(i: int, v: int)     { bytes_set(self, i, v); }
+    pub fn slice(s: int, e: int) : bytes { ret bytes_slice(self, s, e); }
+    pub fn append(other: bytes)    { bytes_append(self, other); }
+    pub fn to_string() : string    { ret bytes_to_string(self); }
+}
+
+// ── Ellie internal ────────────────────────────────────────────────────────────
+
+pub fn array_len(value: dyn): int;
+pub fn frame_pos() : int;
+pub fn code_pos() : int;
+pub fn render_value(value: dyn);
+
+// ── platform.ei ──────────────────────────────────────────────────────────────
+
+pub fn print(s: string);
+pub fn println(s: string);
+pub fn panic(s: string);
+pub fn timestamp() : int;
+pub fn sleep_ms(ms: int);
+
+// ── fs.ei ────────────────────────────────────────────────────────────────────
+
+pub fn fs_read_file(path: string) : string;
+pub fn fs_write_file(path: string, contents: string) : bool;
+pub fn fs_append_file(path: string, contents: string) : bool;
+pub fn fs_exists(path: string) : bool;
+pub fn fs_is_file(path: string) : bool;
+pub fn fs_is_dir(path: string) : bool;
+pub fn fs_remove_file(path: string) : bool;
+pub fn fs_remove_dir(path: string) : bool;
+pub fn fs_remove_dir_all(path: string) : bool;
+pub fn fs_rename(from: string, to: string) : bool;
+pub fn fs_create_dir(path: string) : bool;
+pub fn fs_create_dir_all(path: string) : bool;
+pub fn fs_read_dir(path: string) : [string];
+pub fn fs_size(path: string) : int;
+pub fn fs_modified_ms(path: string) : int;
+pub fn fs_read_bytes(path: string) : bytes;
+pub fn fs_write_bytes(path: string, b: bytes) : bool;
+pub fn fs_read_into(path: string, b: bytes, offset: int, len: int) : int;
+
+// ── bytes intrinsics ─────────────────────────────────────────────────────────
+
+pub fn bytes_alloc(n: int) : bytes;
+pub fn bytes_from_string(s: string) : bytes;
+// First arg is `dyn` so the class methods can pass `self` cleanly. The
+// runtime always validates the underlying heap kind.
+pub fn bytes_len(b: dyn) : int;
+pub fn bytes_pos(b: dyn) : int;
+pub fn bytes_set_pos(b: dyn, p: int);
+pub fn bytes_get(b: dyn, i: int) : int;
+pub fn bytes_set(b: dyn, i: int, v: int);
+pub fn bytes_slice(b: dyn, start: int, end: int) : bytes;
+pub fn bytes_append(dst: dyn, src: dyn);
+pub fn bytes_to_string(b: dyn) : string;
+
+// ── time.ei ──────────────────────────────────────────────────────────────────
+
+pub fn time_now_ms() : int;
+pub fn time_now_s() : int;
+pub fn time_now_iso() : string;
+pub fn time_format(ms: int, fmt: string) : string;
+pub fn time_parse(s: string, fmt: string) : int;
+pub fn time_year(ms: int) : int;
+pub fn time_month(ms: int) : int;
+pub fn time_day(ms: int) : int;
+pub fn time_hour(ms: int) : int;
+pub fn time_minute(ms: int) : int;
+pub fn time_second(ms: int) : int;
+
+// ── encoding.ei ──────────────────────────────────────────────────────────────
+
+pub fn base64_encode(s: string) : string;
+pub fn base64_decode(s: string) : string;
+pub fn hex_encode(s: string) : string;
+pub fn hex_decode(s: string) : string;
+
+// ── crypto.ei ────────────────────────────────────────────────────────────────
+
+pub fn crypto_sha256_hex(s: string) : string;
+pub fn crypto_sha512_hex(s: string) : string;
+pub fn random_int(min: int, max: int) : int;
+
+// ── net.ei — TCP ─────────────────────────────────────────────────────────────
+//
+// Each fn returns a `tcp_stream` / `tcp_listener` value, or null on failure.
+// First arg of mutators is `dyn` because tcp_close accepts either kind.
+
+pub fn tcp_connect(host: string, port: int, timeout_ms: int) : TcpStream;
+pub fn tcp_listen(host: string, port: int) : TcpListener;
+pub fn tcp_accept(listener: dyn) : TcpStream;
+pub fn tcp_read(stream: dyn, buf: bytes, offset: int, len: int) : int;
+pub fn tcp_write(stream: dyn, buf: bytes, offset: int, len: int) : int;
+pub fn tcp_set_read_timeout(stream: dyn, ms: int);
+pub fn tcp_set_write_timeout(stream: dyn, ms: int);
+pub fn tcp_peer_addr(stream: dyn) : string;
+pub fn tcp_local_addr(handle: dyn) : string;
+pub fn tcp_close(handle: dyn);
+
+// ── net.ei — UDP ─────────────────────────────────────────────────────────────
+
+pub fn udp_bind(host: string, port: int) : UdpSocket;
+pub fn udp_send_to(sock: dyn, buf: bytes, offset: int, len: int, host: string, port: int) : int;
+pub fn udp_recv_into(sock: dyn, buf: bytes, offset: int, len: int) : int;
+pub fn udp_last_host(sock: dyn) : string;
+pub fn udp_last_port(sock: dyn) : int;
+pub fn udp_local_addr(sock: dyn) : string;
+pub fn udp_set_read_timeout(sock: dyn, ms: int);
+pub fn udp_close(sock: dyn);
