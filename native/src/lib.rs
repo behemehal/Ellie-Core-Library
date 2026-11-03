@@ -583,6 +583,54 @@ pub extern "Rust" fn bytes_to_string(ctx: &mut dyn EllieCtx, args: Vec<FunctionC
     ok(String::from_utf8_lossy(view).into_owned())
 }
 
+// Treats the byte buffer as a little-endian u32 array. Useful for pixel
+// buffers (minifb expects &[u32]) and any binary protocol with 32-bit words.
+// Pixel/word index is 1/4 of the byte offset.
+
+#[no_mangle]
+pub extern "Rust" fn bytes_set_u32(ctx: &mut dyn EllieCtx, args: Vec<FunctionCallParameter>) -> FunctionAnswer {
+    let h = match bytes_arg(&args, 0) { Some(h) => h, None => return ok(()) };
+    let idx = int_arg(&args, 1).max(0) as usize;
+    let value = int_arg(&args, 2) as u32;
+    if let Some(slice) = ctx.bytes_mut_slice(h, idx.wrapping_mul(4), 4) {
+        slice.copy_from_slice(&value.to_le_bytes());
+    }
+    ok(())
+}
+
+#[no_mangle]
+pub extern "Rust" fn bytes_get_u32(ctx: &mut dyn EllieCtx, args: Vec<FunctionCallParameter>) -> FunctionAnswer {
+    let h = match bytes_arg(&args, 0) { Some(h) => h, None => return ok_int(0) };
+    let idx = int_arg(&args, 1).max(0) as usize;
+    let view = ctx.bytes_view(h).unwrap_or(&[]);
+    let off = idx.wrapping_mul(4);
+    if off + 4 > view.len() {
+        return ok_int(0);
+    }
+    let v = u32::from_le_bytes([view[off], view[off + 1], view[off + 2], view[off + 3]]);
+    ok_int(v as isize)
+}
+
+#[no_mangle]
+pub extern "Rust" fn bytes_fill_u32(ctx: &mut dyn EllieCtx, args: Vec<FunctionCallParameter>) -> FunctionAnswer {
+    let h = match bytes_arg(&args, 0) { Some(h) => h, None => return ok(()) };
+    let start = int_arg(&args, 1).max(0) as usize;
+    let end = int_arg(&args, 2).max(0) as usize;
+    let value = int_arg(&args, 3) as u32;
+    if end <= start {
+        return ok(());
+    }
+    let byte_start = start.wrapping_mul(4);
+    let byte_len = end.wrapping_sub(start).wrapping_mul(4);
+    if let Some(slice) = ctx.bytes_mut_slice(h, byte_start, byte_len) {
+        let bytes = value.to_le_bytes();
+        for chunk in slice.chunks_exact_mut(4) {
+            chunk.copy_from_slice(&bytes);
+        }
+    }
+    ok(())
+}
+
 // ── net.ei — TCP ─────────────────────────────────────────────────────────────
 
 use std::io::{Read, Write};
@@ -1207,6 +1255,9 @@ pub extern "Rust" fn load_module() -> EllieModule {
             EllieFunction { name: "bytes_slice",         on_call: bytes_slice         },
             EllieFunction { name: "bytes_append",        on_call: bytes_append        },
             EllieFunction { name: "bytes_to_string",     on_call: bytes_to_string     },
+            EllieFunction { name: "bytes_set_u32",       on_call: bytes_set_u32       },
+            EllieFunction { name: "bytes_get_u32",       on_call: bytes_get_u32       },
+            EllieFunction { name: "bytes_fill_u32",      on_call: bytes_fill_u32      },
 
             // net.ei — TCP
             EllieFunction { name: "tcp_connect",            on_call: tcp_connect            },

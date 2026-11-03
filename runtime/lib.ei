@@ -120,6 +120,9 @@ pub fn println(s: string);
 pub fn panic(s: string);
 pub fn timestamp() : int;
 pub fn sleep_ms(ms: int);
+pub fn get_arch() : string;
+pub fn get_os() : string;
+pub fn get_eol() : string;
 
 // ── fs.ei ────────────────────────────────────────────────────────────────────
 
@@ -156,6 +159,13 @@ pub fn bytes_set(b: dyn, i: int, v: int);
 pub fn bytes_slice(b: dyn, start: int, end: int) : bytes;
 pub fn bytes_append(dst: dyn, src: dyn);
 pub fn bytes_to_string(b: dyn) : string;
+
+// Treat the buffer as a little-endian u32 array (4 bytes per word).
+// pixel_idx is in u32-units, not bytes — so 0 == first 4 bytes.
+pub fn bytes_set_u32(b: dyn, pixel_idx: int, value: int);
+pub fn bytes_get_u32(b: dyn, pixel_idx: int) : int;
+// Fill the half-open u32 range [start_pixel, end_pixel) with `value`.
+pub fn bytes_fill_u32(b: dyn, start_pixel: int, end_pixel: int, value: int);
 
 // ── time.ei ──────────────────────────────────────────────────────────────────
 
